@@ -216,7 +216,7 @@ func send(seed, destination string, amount string) (tx string, err error) {
 	if err != nil {
 		return
 	}
-	tx = string(output)
+	tx = strings.Trim(string(output), " \r\n")
 	return
 }
 
