@@ -45,3 +45,13 @@ func (t Cryptocurrency) Send(seed, dest string, amount float64) (tx string, err 
 	err = errors.New("Not supported yet")
 	return
 }
+
+func (t Cryptocurrency) SendAll(seed, dest string) (tx string, err error) {
+	switch t {
+	case Bitcoin:
+		return bitcoin.SendAll(seed, dest)
+	}
+
+	err = errors.New("Not supported yet")
+	return
+}
