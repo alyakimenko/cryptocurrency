@@ -55,3 +55,13 @@ func (t Cryptocurrency) SendAll(seed, dest string) (tx string, err error) {
 	err = errors.New("Not supported yet")
 	return
 }
+
+func (t Cryptocurrency) Validate(btc string) (valid bool, err error) {
+	switch t {
+	case Bitcoin:
+		return bitcoin.Validate(btc)
+	}
+
+	err = errors.New("Not supported yet")
+	return
+}
