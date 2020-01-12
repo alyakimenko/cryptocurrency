@@ -43,9 +43,11 @@ func startDaemon(wallet string) (err error) {
 		return
 	}
 
-	for {
+	err = errors.New("Can't synchronize electrum")
+	for start := time.Now(); time.Since(start) < time.Minute; {
 		output, _ = electrum(wallet, "is_synchronized")
 		if string(output) == "true\n" {
+			err = nil
 			break
 		}
 		time.Sleep(time.Second)
