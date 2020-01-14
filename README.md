@@ -12,7 +12,7 @@ Start:
     go test -v code.dumpstack.io/lib/cryptocurrency/...
 
 Usage:
-
+```go
     package main
 
     import (
@@ -63,3 +63,4 @@ Usage:
         }
         log.Println(tx)
     }
+```
