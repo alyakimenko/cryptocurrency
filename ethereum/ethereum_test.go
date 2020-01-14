@@ -3,6 +3,8 @@ package ethereum
 import (
 	"testing"
 	"time"
+
+	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 func init() {
@@ -104,7 +106,12 @@ func TestSend(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	_, err = Send(seed, address, 0.0000001)
+	tx, err := Send(seed, address, 0.0000001)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_, err = hexutil.Decode(tx)
 	if err != nil {
 		t.Fatal(err)
 	}

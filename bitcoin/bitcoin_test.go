@@ -1,6 +1,7 @@
 package bitcoin
 
 import (
+	"regexp"
 	"testing"
 	"time"
 )
@@ -107,9 +108,14 @@ func TestSend(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	_, err = Send(seed, address, 0.0000001)
+	tx, err := Send(seed, address, 0.0000001)
 	if err != nil {
 		t.Fatal(err)
+	}
+
+	valid := regexp.MustCompile("^[a-fA-F0-9]{64}$").MatchString(tx)
+	if !valid {
+		t.Fatal("tx is invalid")
 	}
 
 	received := false
