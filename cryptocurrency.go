@@ -2,6 +2,7 @@ package cryptocurrency
 
 import (
 	"errors"
+	"math/big"
 
 	"code.dumpstack.io/lib/cryptocurrency/bitcoin"
 	"code.dumpstack.io/lib/cryptocurrency/ethereum"
@@ -50,6 +51,28 @@ func (t Cryptocurrency) Balance(seed string) (amount float64, err error) {
 		return bitcoin.Balance(seed)
 	case Ethereum:
 		return ethereum.Balance(seed)
+	}
+
+	err = errors.New("Not supported yet")
+	return
+}
+
+// BalanceUnits returns the balance of the wallet (not address!) in Satoshi/Wei/etc.
+func (t Cryptocurrency) BalanceUnits(seed string) (units *big.Int, err error) {
+	switch t {
+	case Ethereum:
+		return ethereum.BalanceWei(seed)
+	}
+
+	err = errors.New("Not supported yet")
+	return
+}
+
+// SendUnits send units amount of Satoshi/Wei/etc. to the address dest
+func (t Cryptocurrency) SendUnits(seed, dest string, units *big.Int) (tx string, err error) {
+	switch t {
+	case Ethereum:
+		return ethereum.SendWei(seed, dest, units)
 	}
 
 	err = errors.New("Not supported yet")

@@ -56,6 +56,7 @@ Usage:
 
         amount := float64(0.1)
         tx, err := c.Send(seed, dest, amount)
+        // tx, err := c.SendUnits(seed, dest, wei) // precise version
         if err != nil {
                 log.Println("here it'll exit because there's no money inside new wallet")
                 log.Fatal(err)
