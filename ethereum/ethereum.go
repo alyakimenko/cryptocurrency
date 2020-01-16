@@ -163,5 +163,21 @@ func SendAll(seed, destination string) (tx string, err error) {
 	if err != nil {
 		return
 	}
-	return SendWei(seed, destination, wei)
+
+	client, err := ethclient.Dial(endpoint())
+	if err != nil {
+		return
+	}
+
+	gasPrice, err := client.SuggestGasPrice(context.Background())
+	if err != nil {
+		return
+	}
+
+	// The gas limit for a standard ETH transfer is 21000 units.
+	gasLimit := new(big.Int).SetUint64(uint64(21000)) // in units
+
+	fee := new(big.Int).Mul(gasPrice, gasLimit)
+
+	return SendWei(seed, destination, new(big.Int).Sub(wei, fee))
 }
