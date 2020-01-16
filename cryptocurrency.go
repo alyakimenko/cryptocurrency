@@ -23,6 +23,16 @@ var Cryptocurrencies = []Cryptocurrency{
 	Ethereum,
 }
 
+func (t Cryptocurrency) MarshalText() (b []byte, err error) {
+	b = []byte(t.Symbol())
+	return
+}
+
+func (t *Cryptocurrency) UnmarshalText(data []byte) (err error) {
+	*t, err = FromSymbol(string(data))
+	return
+}
+
 func (t Cryptocurrency) Symbol() string {
 	switch t {
 	case Bitcoin:
