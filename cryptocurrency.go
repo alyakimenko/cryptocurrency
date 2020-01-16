@@ -13,9 +13,37 @@ type Cryptocurrency int
 const (
 	Bitcoin Cryptocurrency = iota
 	Ethereum
-	Monero
-	Cardano
+	// TODO:
+	// Monero
+	// Cardano
 )
+
+var Cryptocurrencies = []Cryptocurrency{
+	Bitcoin,
+	Ethereum,
+}
+
+func (t Cryptocurrency) Symbol() string {
+	switch t {
+	case Bitcoin:
+		return "btc"
+	case Ethereum:
+		return "eth"
+	}
+	panic(nil)
+}
+
+func FromSymbol(symbol string) (cc Cryptocurrency, err error) {
+	switch symbol {
+	case "btc":
+		cc = Bitcoin
+	case "eth":
+		cc = Ethereum
+	default:
+		err = errors.New("unknown cryptocurrency")
+	}
+	return
+}
 
 func (t Cryptocurrency) Testnet(state bool) (err error) {
 	switch t {
