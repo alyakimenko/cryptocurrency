@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -17,7 +18,7 @@ var Testnet = false
 
 func init() {
 	if exec.Command("which", "electrum").Run() != nil {
-		panic("`electrum` is not found in $PATH")
+		log.Println("`electrum` is not found in $PATH")
 	}
 }
 
