@@ -2,6 +2,7 @@ package ethereum
 
 import (
 	"context"
+	"errors"
 	"log"
 	"math/big"
 	"os"
@@ -161,6 +162,11 @@ func Send(seed, destination string, amount float64) (tx string, err error) {
 func SendAll(seed, destination string) (tx string, err error) {
 	wei, err := BalanceWei(seed)
 	if err != nil {
+		return
+	}
+
+	if big.NewInt(0).Cmp(wei) == 0 {
+		err = errors.New("zero balance")
 		return
 	}
 
