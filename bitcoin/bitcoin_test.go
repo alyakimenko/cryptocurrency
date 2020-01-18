@@ -75,8 +75,8 @@ func TestBalance(t *testing.T) {
 	}
 
 	// wallet with some test btc inside
-	seed = "flag release number shift amazing bacon " +
-		"trend maximum lawsuit start traffic feel"
+	seed = "act sentence begin build tornado note " +
+		"then jungle jar govern bird dinner"
 	balance, err = Balance(seed)
 	if err != nil {
 		t.Fatal(err)
