@@ -98,6 +98,35 @@ func GenWallet() (seed, address string, err error) {
 	return
 }
 
+func GetAddress(seed string) (address string, err error) {
+	dir, err := ioutil.TempDir("/tmp/", "cryptocurrency_")
+	if err != nil {
+		return
+	}
+	defer os.RemoveAll(dir)
+
+	wallet := filepath.Join(dir, "wallet")
+
+	output, err := electrum(wallet, "restore", seed)
+	if err != nil {
+		return
+	}
+
+	err = startDaemon(wallet)
+	if err != nil {
+		return
+	}
+	defer stopDaemon(wallet)
+
+	output, err = electrum(wallet, "getunusedaddress")
+	if err != nil {
+		return
+	}
+
+	address = strings.Trim(string(output), " \r\n")
+	return
+}
+
 func parseBalance(output []byte) (confirmed, unconfirmed float64, err error) {
 	var result struct{ Confirmed, Unconfirmed string }
 	err = json.Unmarshal(output, &result)

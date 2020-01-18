@@ -83,6 +83,21 @@ func (t Cryptocurrency) GenWallet() (seed, address string, err error) {
 	return
 }
 
+// GetAddress for the wallet (can be the same or different every time)
+func (t Cryptocurrency) GetAddress(seed string) (address string, err error) {
+	switch t {
+	case Bitcoin:
+		address, err = bitcoin.GetAddress(seed)
+		return
+	case Ethereum:
+		address, err = ethereum.GetAddress(seed)
+		return
+	}
+
+	err = errors.New("Not supported yet")
+	return
+}
+
 func (t Cryptocurrency) Balance(seed string) (amount float64, err error) {
 	switch t {
 	case Bitcoin:

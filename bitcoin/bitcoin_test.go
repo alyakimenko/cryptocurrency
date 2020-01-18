@@ -135,3 +135,19 @@ func TestSend(t *testing.T) {
 		t.Fatal("Does not received btc")
 	}
 }
+
+func TestGetAddress(t *testing.T) {
+	seed, address, err := GenWallet()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	newaddress, err := GetAddress(seed)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if address != newaddress {
+		t.Fatal("the address is not the same")
+	}
+}

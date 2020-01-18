@@ -46,6 +46,11 @@ func GenWallet() (seed, address string, err error) {
 		return
 	}
 
+	address, err = GetAddress(seed)
+	return
+}
+
+func GetAddress(seed string) (address string, err error) {
 	account, err := accountFromMnemonic(seed)
 	if err != nil {
 		return
