@@ -18,6 +18,7 @@ const (
 	// Cardano
 )
 
+// Cryptocurrencies list
 var Cryptocurrencies = []Cryptocurrency{
 	Bitcoin,
 	Ethereum,
@@ -33,6 +34,7 @@ func (t *Cryptocurrency) UnmarshalText(data []byte) (err error) {
 	return
 }
 
+// Symbol of cryptocurrency (btc, eth, etc.)
 func (t Cryptocurrency) Symbol() string {
 	switch t {
 	case Bitcoin:
@@ -55,6 +57,7 @@ func FromSymbol(symbol string) (cc Cryptocurrency, err error) {
 	return
 }
 
+// Testnet enable or disable
 func (t Cryptocurrency) Testnet(state bool) (err error) {
 	switch t {
 	case Bitcoin:
@@ -69,6 +72,7 @@ func (t Cryptocurrency) Testnet(state bool) (err error) {
 	return
 }
 
+// GenWallet for specified cryptocurrency
 func (t Cryptocurrency) GenWallet() (seed, address string, err error) {
 	switch t {
 	case Bitcoin:
@@ -98,6 +102,7 @@ func (t Cryptocurrency) GetAddress(seed string) (address string, err error) {
 	return
 }
 
+// Balance of the wallet (not address!)
 func (t Cryptocurrency) Balance(seed string) (amount float64, err error) {
 	switch t {
 	case Bitcoin:
@@ -123,7 +128,7 @@ func (t Cryptocurrency) BalanceUnits(seed string) (units *big.Int, err error) {
 	return
 }
 
-// SendUnits send units amount of Satoshi/Wei/etc. to the address dest
+// SendUnits amount of Satoshi/Wei/etc. to the address dest
 func (t Cryptocurrency) SendUnits(seed, dest string, units *big.Int) (tx string, err error) {
 	switch t {
 	case Bitcoin:
@@ -136,6 +141,7 @@ func (t Cryptocurrency) SendUnits(seed, dest string, units *big.Int) (tx string,
 	return
 }
 
+// Send the amount of cryptocurrency to destination address
 func (t Cryptocurrency) Send(seed, dest string, amount float64) (tx string, err error) {
 	switch t {
 	case Bitcoin:
@@ -148,6 +154,7 @@ func (t Cryptocurrency) Send(seed, dest string, amount float64) (tx string, err 
 	return
 }
 
+// SendAll cryptocurrency to destination address
 func (t Cryptocurrency) SendAll(seed, dest string) (tx string, err error) {
 	switch t {
 	case Bitcoin:
@@ -160,6 +167,7 @@ func (t Cryptocurrency) SendAll(seed, dest string) (tx string, err error) {
 	return
 }
 
+// Validate cryptocurrency address
 func (t Cryptocurrency) Validate(address string) (valid bool, err error) {
 	switch t {
 	case Bitcoin:
