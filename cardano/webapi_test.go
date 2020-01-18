@@ -5,6 +5,7 @@
 package cardano
 
 import (
+	"strconv"
 	"testing"
 )
 
@@ -46,6 +47,35 @@ func Test_utxoSumForAddresses(t *testing.T) {
 	}
 
 	if sum != 0 {
+		t.Fatal("Wrong UTXO Sum")
+	}
+}
+
+func Test_utxoForAddresses(t *testing.T) {
+	addresses := []string{
+		"Ae2tdPwUPEYz56j2qffuLfQEN9y4YuMbefJRqyfsHuuWX2TzRENMTX23pGr",
+		"Ae2tdPwUPEYwJGMJfPkC3bRn6c5oSGTwwuEWuR3ofDG5T6c6vH7XL5DMmGH",
+		"Ae2tdPwUPEZCdLWob8bJRXumWHNZ7rXWPjHGTq5qT9YeuaeXTicoNxFhmZt",
+		"Ae2tdPwUPEZ2SU9qv63oVGTLpPL1iPw6Xmm1xRT98KWvQpgYZBbj8gWfmJt",
+		"Ae2tdPwUPEZ6GQPHgXuM31aEFKm4ZHGULQfT2iSPDcqkMVbyDLfMhaoAaSd",
+	}
+
+	utxos, err := utxoForAddresses(addresses)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var sum int64
+	for _, utxo := range utxos {
+		amount, err := strconv.ParseInt(utxo.Amount, 10, 64)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		sum += amount
+	}
+
+	if sum != 32133700 {
 		t.Fatal("Wrong UTXO Sum")
 	}
 }

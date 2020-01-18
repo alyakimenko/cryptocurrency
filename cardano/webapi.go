@@ -74,3 +74,39 @@ func utxoSumForAddresses(addresses []string) (sum int64, err error) {
 	sum, err = strconv.ParseInt(result.Sum, 10, 64)
 	return
 }
+
+type utxo struct {
+	Amount   string `json:"amount"`
+	BlockNum int    `json:"block_num"`
+	Receiver string `json:"receiver"`
+	TxHash   string `json:"tx_hash"`
+	TxIndex  int    `json:"tx_index"`
+	UtxoID   string `json:"utxo_id"`
+}
+
+func utxoForAddresses(addresses []string) (utxos []utxo, err error) {
+	payload := struct {
+		Addresses []string `json:"addresses"`
+	}{Addresses: addresses}
+
+	payloadBytes, err := json.Marshal(payload)
+	if err != nil {
+		return
+	}
+	body := bytes.NewReader(payloadBytes)
+
+	req, err := http.NewRequest("POST", endpoint()+"txs/utxoForAddresses", body)
+	if err != nil {
+		return
+	}
+	req.Header.Set("Content-Type", "application/json;charset=UTF-8")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return
+	}
+	defer resp.Body.Close()
+
+	err = json.NewDecoder(resp.Body).Decode(&utxos)
+	return
+}
