@@ -98,6 +98,8 @@ func (t Cryptocurrency) Balance(seed string) (amount float64, err error) {
 // BalanceUnits returns the balance of the wallet (not address!) in Satoshi/Wei/etc.
 func (t Cryptocurrency) BalanceUnits(seed string) (units *big.Int, err error) {
 	switch t {
+	case Bitcoin:
+		return bitcoin.BalanceSatoshi(seed)
 	case Ethereum:
 		return ethereum.BalanceWei(seed)
 	}
@@ -109,6 +111,8 @@ func (t Cryptocurrency) BalanceUnits(seed string) (units *big.Int, err error) {
 // SendUnits send units amount of Satoshi/Wei/etc. to the address dest
 func (t Cryptocurrency) SendUnits(seed, dest string, units *big.Int) (tx string, err error) {
 	switch t {
+	case Bitcoin:
+		return bitcoin.SendSatoshi(seed, dest, units)
 	case Ethereum:
 		return ethereum.SendWei(seed, dest, units)
 	}

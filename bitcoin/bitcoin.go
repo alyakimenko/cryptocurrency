@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"math/big"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -127,6 +128,18 @@ func Balance(seed string) (amount float64, err error) {
 	return
 }
 
+func BalanceSatoshi(seed string) (amount *big.Int, err error) {
+	amountf, err := Balance(seed)
+	if err != nil {
+		return
+	}
+
+	amountbigf := new(big.Float).SetFloat64(amountf)
+	btc := big.NewFloat(100000000)
+	amount, _ = new(big.Float).Mul(amountbigf, btc).Int(nil)
+	return
+}
+
 func RawBalance(seed string) (confirmed, unconfirmed float64, err error) {
 	dir, err := ioutil.TempDir("/tmp/", "cryptocurrency_")
 	if err != nil {
@@ -221,6 +234,13 @@ func send(seed, destination string, amount string) (tx string, err error) {
 	}
 	tx = strings.Trim(string(output), " \r\n")
 	return
+}
+
+func SendSatoshi(seed, destination string, units *big.Int) (tx string, err error) {
+	btc := big.NewFloat(100000000)
+	unitsf := new(big.Float).SetInt(units)
+	amount := new(big.Float).Quo(unitsf, btc).Text('f', 8)
+	return send(seed, destination, amount)
 }
 
 func Send(seed, destination string, amount float64) (tx string, err error) {
