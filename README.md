@@ -1,3 +1,9 @@
+![GitHub Actions](https://github.com/jollheef/cryptocurrency/workflows/Build%20and%20Test/badge.svg)
+[![GoDoc](https://godoc.org/code.dumpstack.io/lib/cryptocurrency?status.svg)](https://godoc.org/code.dumpstack.io/lib/cryptocurrency)
+[![Go Report Card](https://goreportcard.com/badge/code.dumpstack.io/lib/cryptocurrency)](https://goreportcard.com/report/code.dumpstack.io/lib/cryptocurrency)
+[![Donate](https://img.shields.io/badge/donate-paypal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R8W2UQPZ5X5JE&source=url)
+[![Donate](https://img.shields.io/badge/donate-bitcoin-blue.svg)](https://blockchair.com/bitcoin/address/bc1q23fyuq7kmngrgqgp6yq9hk8a5q460f39m8nv87)
+
 # Cryptocurrency API
 
 Stateless cryptocurrency API.
