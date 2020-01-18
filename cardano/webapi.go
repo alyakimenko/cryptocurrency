@@ -10,6 +10,7 @@ import (
 )
 
 func endpoint() (url string) {
+	// TODO support testnet
 	return "https://iohk-mainnet.yoroiwallet.com/api/"
 }
 

@@ -9,6 +9,7 @@ import (
 )
 
 func genSeed() (seed string, err error) {
+	// TODO generate Yoroi-compatible mnemonic (15 words)
 	entropy, err := bip39.NewEntropy(256)
 	if err != nil {
 		return

@@ -18,6 +18,7 @@ func xWalletAccount(wallet string, n int) (account string, err error) {
 }
 
 func xWalletAddresses(account string) (addresses string, err error) {
+	// TODO add parameter how many addresses to get
 	payload := "{ \"account\": " + account +
 		", \"address_type\": \"External\", \"indices\": [0,1,2,3,4]}"
 	return jsonapi("xwallet_addresses", payload)
