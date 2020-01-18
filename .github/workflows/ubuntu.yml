@@ -28,6 +28,8 @@ jobs:
         nix-channel --update
 
     - name: Test
+      env:
+        INFURA_API_KEY: ${{ secrets.INFURA_API_KEY }}
       run: |
         . ~/.nix-profile/etc/profile.d/nix.sh
-        nix-shell --pure --command 'go test -v ./...'
+        nix-shell --pure --keep INFURA_API_KEY --command 'go test -v ./...'
