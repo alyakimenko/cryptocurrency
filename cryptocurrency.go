@@ -9,6 +9,7 @@ import (
 	"math/big"
 
 	"code.dumpstack.io/lib/cryptocurrency/bitcoin"
+	"code.dumpstack.io/lib/cryptocurrency/cardano"
 	"code.dumpstack.io/lib/cryptocurrency/ethereum"
 )
 
@@ -17,15 +18,16 @@ type Cryptocurrency int
 const (
 	Bitcoin Cryptocurrency = iota
 	Ethereum
+	Cardano
 	// TODO:
 	// Monero
-	// Cardano
 )
 
 // Cryptocurrencies list
 var Cryptocurrencies = []Cryptocurrency{
 	Bitcoin,
 	Ethereum,
+	Cardano,
 }
 
 func (t Cryptocurrency) MarshalText() (b []byte, err error) {
@@ -45,6 +47,8 @@ func (t Cryptocurrency) Symbol() string {
 		return "btc"
 	case Ethereum:
 		return "eth"
+	case Cardano:
+		return "ada"
 	}
 	panic(nil)
 }
@@ -55,6 +59,8 @@ func FromSymbol(symbol string) (cc Cryptocurrency, err error) {
 		cc = Bitcoin
 	case "eth":
 		cc = Ethereum
+	case "ada":
+		cc = Cardano
 	default:
 		err = errors.New("unknown cryptocurrency")
 	}
@@ -85,6 +91,9 @@ func (t Cryptocurrency) GenWallet() (seed, address string, err error) {
 	case Ethereum:
 		seed, address, err = ethereum.GenWallet()
 		return
+	case Cardano:
+		seed, address, err = cardano.GenWallet()
+		return
 	}
 
 	err = errors.New("Not supported yet")
@@ -100,6 +109,9 @@ func (t Cryptocurrency) GetAddress(seed string) (address string, err error) {
 	case Ethereum:
 		address, err = ethereum.GetAddress(seed)
 		return
+	case Cardano:
+		address, err = cardano.GetAddress(seed)
+		return
 	}
 
 	err = errors.New("Not supported yet")
@@ -113,6 +125,8 @@ func (t Cryptocurrency) Balance(seed string) (amount float64, err error) {
 		return bitcoin.Balance(seed)
 	case Ethereum:
 		return ethereum.Balance(seed)
+	case Cardano:
+		return cardano.Balance(seed)
 	}
 
 	err = errors.New("Not supported yet")
@@ -126,6 +140,8 @@ func (t Cryptocurrency) BalanceUnits(seed string) (units *big.Int, err error) {
 		return bitcoin.BalanceSatoshi(seed)
 	case Ethereum:
 		return ethereum.BalanceWei(seed)
+	case Cardano:
+		return cardano.BalanceLovelace(seed)
 	}
 
 	err = errors.New("Not supported yet")
