@@ -155,6 +155,8 @@ func (t Cryptocurrency) SendUnits(seed, dest string, units *big.Int) (tx string,
 		return bitcoin.SendSatoshi(seed, dest, units)
 	case Ethereum:
 		return ethereum.SendWei(seed, dest, units)
+	case Cardano:
+		return cardano.SendLovelace(seed, dest, units)
 	}
 
 	err = errors.New("Not supported yet")
@@ -168,6 +170,8 @@ func (t Cryptocurrency) Send(seed, dest string, amount float64) (tx string, err 
 		return bitcoin.Send(seed, dest, amount)
 	case Ethereum:
 		return ethereum.Send(seed, dest, amount)
+	case Cardano:
+		return cardano.Send(seed, dest, amount)
 	}
 
 	err = errors.New("Not supported yet")
@@ -181,6 +185,8 @@ func (t Cryptocurrency) SendAll(seed, dest string) (tx string, err error) {
 		return bitcoin.SendAll(seed, dest)
 	case Ethereum:
 		return ethereum.SendAll(seed, dest)
+	case Cardano:
+		return cardano.SendAll(seed, dest)
 	}
 
 	err = errors.New("Not supported yet")

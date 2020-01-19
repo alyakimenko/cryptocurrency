@@ -32,6 +32,8 @@ func main() {
 	dest := "mk84dHbQoUHWaWGuYspx6GXWgcjB9CuQqw"
 	// c := cryptocurrency.Ethereum
 	// dest := "0xD98660C76443A8A043a19499048EeC4FB06f2581"
+	// c := cryptocurrency.Cardano
+	// dest := "Ae2tdPwUPEZ68cfEjZjKKRabiqbazMtP69uGaM2pMZRg87fvn4FGvR95BEV"
 
 	err := c.Testnet(true)
 	if err != nil {

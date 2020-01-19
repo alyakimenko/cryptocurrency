@@ -23,3 +23,11 @@ func xWalletAddresses(account string) (addresses string, err error) {
 		", \"address_type\": \"External\", \"indices\": [0,1,2,3,4]}"
 	return jsonapi("xwallet_addresses", payload)
 }
+
+func xWalletSpend(wallet, inputs, output, change string) (signedTx string, err error) {
+	payload := "{ \"wallet\": " + wallet +
+		", \"inputs\": " + inputs + ", " +
+		"\"outputs\": " + output + ", " +
+		"\"change_addr\": \"" + change + "\"}"
+	return jsonapi("xwallet_spend", payload)
+}

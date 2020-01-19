@@ -7,6 +7,9 @@ package cardano
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strconv"
 )
@@ -108,5 +111,50 @@ func utxoForAddresses(addresses []string) (utxos []utxo, err error) {
 	defer resp.Body.Close()
 
 	err = json.NewDecoder(resp.Body).Decode(&utxos)
+	return
+}
+
+func sendSignedTx(tx string) (err error) {
+	data := struct {
+		SignedTx string `json:"signedTx"`
+	}{SignedTx: tx}
+
+	payloadBytes, err := json.Marshal(data)
+	if err != nil {
+		return
+	}
+	body := bytes.NewReader(payloadBytes)
+
+	req, err := http.NewRequest("POST", endpoint()+"txs/signed", body)
+	if err != nil {
+		return
+	}
+	req.Header.Set("Content-Type", "application/json;charset=UTF-8")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return
+	}
+	defer resp.Body.Close()
+
+	bytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+
+	if string(bytes) == "[]" {
+		// success
+		return
+	}
+	//
+	// failure; read error message
+	//
+	var result struct{ Code, Message string }
+	err = json.Unmarshal(bytes, &result)
+	if err != nil {
+		return
+	}
+
+	err = errors.New(fmt.Sprintf("[%s] %s", result.Code, result.Message))
 	return
 }
