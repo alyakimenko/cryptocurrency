@@ -12,6 +12,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 func endpoint() (url string) {
@@ -156,5 +157,43 @@ func sendSignedTx(tx string) (err error) {
 	}
 
 	err = errors.New(fmt.Sprintf("[%s] %s", result.Code, result.Message))
+	return
+}
+
+func inArray(u utxo, array []utxo) bool {
+	for _, utxoFromArray := range array {
+		if u.TxHash == utxoFromArray.TxHash {
+			return true
+		}
+	}
+	return false
+}
+
+func getTxTry(addrs []string, oldutxos []utxo) (found bool, tx string, err error) {
+	// Looking for a new transaction
+	newutxos, err := utxoForAddresses(addrs)
+	if err != nil {
+		return
+	}
+
+	// Looking for a new transaction
+	for _, newutxo := range newutxos {
+		if !inArray(newutxo, oldutxos) {
+			found = true
+			tx = newutxo.TxHash
+		}
+	}
+	return
+}
+
+func getTx(addrs []string, oldutxos []utxo) (tx string, err error) {
+	for start := time.Now(); time.Since(start) < time.Minute; {
+		var found bool
+		found, tx, err = getTxTry(addrs, oldutxos)
+		if err != nil || found {
+			return
+		}
+		time.Sleep(time.Second)
+	}
 	return
 }

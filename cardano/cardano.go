@@ -7,6 +7,7 @@ package cardano
 import (
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"math/big"
 	"regexp"
 
@@ -139,6 +140,10 @@ func SendLovelace(seed, destination string, amount *big.Int) (tx string, err err
 	if err != nil {
 		return
 	}
+	if len(utxos) == 0 {
+		err = errors.New("no utxos")
+		return
+	}
 
 	type input struct {
 		TxIN struct {
@@ -206,9 +211,15 @@ func SendLovelace(seed, destination string, amount *big.Int) (tx string, err err
 		return
 	}
 
-	tx = base64.StdEncoding.EncodeToString(result.Tx)
-	err = sendSignedTx(tx)
-	return
+	signedTx := base64.StdEncoding.EncodeToString(result.Tx)
+	err = sendSignedTx(signedTx)
+	if err != nil {
+		return
+	}
+
+	// TODO there should be a way to do it normally without
+	// parsing transactions from the server
+	return getTx(addresses, utxos)
 }
 
 func Validate(address string) (valid bool, err error) {
