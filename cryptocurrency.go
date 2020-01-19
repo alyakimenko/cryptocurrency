@@ -200,6 +200,8 @@ func (t Cryptocurrency) Validate(address string) (valid bool, err error) {
 		return bitcoin.Validate(address)
 	case Ethereum:
 		return ethereum.Validate(address)
+	case Cardano:
+		return cardano.Validate(address)
 	}
 
 	err = errors.New("Not supported yet")

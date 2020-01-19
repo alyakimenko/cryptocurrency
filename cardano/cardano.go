@@ -8,6 +8,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"math/big"
+	"regexp"
 
 	"github.com/tyler-smith/go-bip39"
 )
@@ -207,5 +208,12 @@ func SendLovelace(seed, destination string, amount *big.Int) (tx string, err err
 
 	tx = base64.StdEncoding.EncodeToString(result.Tx)
 	err = sendSignedTx(tx)
+	return
+}
+
+func Validate(address string) (valid bool, err error) {
+	// TODO
+	re := regexp.MustCompile("^[0-9a-zA-Z]{32,256}$")
+	valid = re.MatchString(address)
 	return
 }
