@@ -14,9 +14,9 @@ import (
 	"github.com/tyler-smith/go-bip39"
 )
 
+// genSeed generates a random mnemonic based on 160-bits of entropy (15 words)
 func genSeed() (seed string, err error) {
-	// TODO generate Yoroi-compatible mnemonic (15 words)
-	entropy, err := bip39.NewEntropy(256)
+	entropy, err := bip39.NewEntropy(160)
 	if err != nil {
 		return
 	}

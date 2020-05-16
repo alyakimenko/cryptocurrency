@@ -4,7 +4,10 @@
 
 package cardano
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func TestGenerateSeed(t *testing.T) {
 	seed, err := genSeed()
@@ -14,6 +17,10 @@ func TestGenerateSeed(t *testing.T) {
 
 	if len(seed) == 0 {
 		t.Fatal("seed is empty")
+	}
+
+	if len(strings.Split(seed, " ")) != 15 {
+		t.Fatal("seed is not 15 words")
 	}
 }
 
